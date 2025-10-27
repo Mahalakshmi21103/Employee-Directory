@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Directory</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.search-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  width: 60%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.employee-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.employee-card {
+  background-color: white;
+  width: 200px;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.employee-card:hover {
+  transform: scale(1.05);
+}
+
+.employee-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+  position: relative;
+}
+
+#closeModal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Employee Directory</h1>
+  
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search employees..." />
+  </div>
+
+  <div id="employeeList" class="employee-list"></div>
+
+  <!-- Modal for viewing employee details -->
+  <div id="employeeModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal">&times;</span>
+      <h2 id="empName"></h2>
+      <p><strong>Position:</strong> <span id="empPosition"></span></p>
+      <p><strong>Email:</strong> <span id="empEmail"></span></p>
+      <p><strong>Phone:</strong> <span id="empPhone"></span></p>
+    </div>
+  </div>
+
+  <script src="script.js">
+    const employees = [
+  {
+    name: "Alice Johnson",
+    position: "Software Engineer",
+    email: "alice.johnson@example.com",
+    phone: "+1 (555) 123-4567",
+    photo: "https://randomuser.me/api/portraits/women/44.jpg"
+  },
+  {
+    name: "Bob Smith",
+    position: "Product Manager",
+    email: "bob.smith@example.com",
+    phone: "+1 (555) 987-6543",
+    photo: "https://randomuser.me/api/portraits/men/32.jpg"
+  },
+  {
+    name: "Clara Davis",
+    position: "UI/UX Designer",
+    email: "clara.davis@example.com",
+    phone: "+1 (555) 222-3333",
+    photo: "https://randomuser.me/api/portraits/women/65.jpg"
+  }
+];
+
+const employeeList = document.getElementById("employeeList");
+const searchInput = document.getElementById("searchInput");
+const modal = document.getElementById("employeeModal");
+const closeModal = document.getElementById("closeModal");
+
+function displayEmployees(filteredEmployees) {
+  employeeList.innerHTML = "";
+  filteredEmployees.forEach(emp => {
+    const card = document.createElement("div");
+    card.classList.add("employee-card");
+    card.innerHTML = `
+      <img src="${emp.photo}" alt="${emp.name}">
+      <h3>${emp.name}</h3>
+      <p>${emp.position}</p>
+    `;
+    card.addEventListener("click", () => showEmployeeDetails(emp));
+    employeeList.appendChild(card);
+  });
+}
+
+function showEmployeeDetails(emp) {
+  modal.style.display = "block";
+  document.getElementById("empName").textContent = emp.name;
+  document.getElementById("empPosition").textContent = emp.position;
+  document.getElementById("empEmail").textContent = emp.email;
+  document.getElementById("empPhone").textContent = emp.phone;
+}
+
+closeModal.onclick = function() {
+  modal.style.display = "none";
+};
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+searchInput.addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
+  const filtered = employees.filter(emp =>
+    emp.name.toLowerCase().includes(value) ||
+    emp.position.toLowerCase().includes(value)
+  );
+  displayEmployees(filtered);
+});
+
+displayEmployees(employees);
+
+  </script>
+</body>
+</html>
