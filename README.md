@@ -1,1 +1,1 @@
-# Employee-Directory
+An employee directory with search is a digital tool or software that stores and organizes employee information, allowing users to quickly find colleagues by searching fields like name, department, job title, and skills using various filtering options. Top software solutions include Pingboard, Connecteam, BambooHR, and solutions built for Microsoft 365 like Employee Directory 365, while customizable options exist for platforms like SharePoint. 
